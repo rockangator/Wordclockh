@@ -73,8 +73,8 @@ const int xx[11][11] = {
   {0, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0},
   {0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0},
   {0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0},
-  {0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0},
-  {0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0},
+  {0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0},
+  {0, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0},
   {0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0},
   {1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1},
   {1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1}
@@ -456,14 +456,17 @@ void loop()
   int xmin = now.minute();
   int xhour = now.hour();
   
-  if (xmin < 30)
+  if (xmin > 2 && xmin < 57)
   {
-    addMatrix(c,past,c);
-  }
-  else
-  {
-    addMatrix(c,to,c);
-    xhour += 1;
+    if (xmin < 30)
+    {
+      addMatrix(c,past,c);
+    }
+    else
+    {
+      addMatrix(c,to,c);
+      xhour += 1;
+    }
   }
   
   switch (xhour)
@@ -545,18 +548,18 @@ void loop()
       break;
     
     default :
-      addMatrix(c,xx,c);
+      addMatrix(xx,xx,c);
       break;
   }
 
-  if (xmin <= 2){addMatrix(c,oclock,c);}
-  else if ((xmin > 2 && xmin <= 7) || (xmin > 32 && xmin <= 37)){addMatrix(c,five1,c);}
-  else if ((xmin > 7 && xmin <= 12) || (xmin > 37 && xmin <= 42)){addMatrix(c,ten1,c);}
+  if (((xmin <= 2) || (xmin > 57)) && ((xhour != 12)||(xhour != 0)||(xhour != 24))){addMatrix(c,oclock,c);}
+  else if ((xmin > 2 && xmin <= 7) || (xmin > 52 && xmin <= 57)){addMatrix(c,five1,c);}
+  else if ((xmin > 7 && xmin <= 12) || (xmin > 47 && xmin <= 52)){addMatrix(c,ten1,c);}
   else if ((xmin > 12 && xmin <= 17) || (xmin > 42 && xmin <= 47)){addMatrix(c,quarter,c);}
-  else if ((xmin > 17 && xmin <= 22) || (xmin > 47 && xmin <= 52)){addMatrix(c,twenty,c);}
-  else if ((xmin > 22 && xmin <= 27) || (xmin > 52 && xmin <= 57)){addMatrix(c,twenty,c);addMatrix(c,five,c);}
+  else if ((xmin > 17 && xmin <= 22) || (xmin > 37 && xmin <= 42)){addMatrix(c,twenty,c);}
+  else if ((xmin > 22 && xmin <= 27) || (xmin > 32 && xmin <= 37)){addMatrix(c,twenty,c);addMatrix(c,five,c);}
   else if ((xmin > 27 && xmin <= 32)){addMatrix(c,half,c);}
-  else{addMatrix(c,xx,c);}
+  else{addMatrix(xx,xx,c);}
   
   lit(c);
 }
@@ -566,7 +569,7 @@ void loop()
 void lit(int mat[11][11])
 {
   unsigned long start = millis(); 
-  while (start + 300000 > millis()) //294000
+  while (start + 120000 > millis())
   {
     for(int col = 0; col < 11; col++)
     {
