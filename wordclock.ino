@@ -1,5 +1,6 @@
 /*
   WordClock for arduino
+  Dad's gift
   By : HK
 */
 
@@ -430,6 +431,7 @@ void setup()
   Serial.begin(9600);
   Wire.begin();
   rtc.begin();
+  Serial.println("Start"); 
 }
 
 //Loop : -------------------------------------------------------------------------------
@@ -454,15 +456,21 @@ void loop()
   //time
   DateTime now = rtc.now();
   int xmin = now.minute();
-  int xhour = now.hour();
+  xmin = (xmin+5)%60;
+  int xhour = now.hour(); 
 
-//  Serial.print(now.hour(), DEC);
-//  Serial.print(':');
-//  Serial.print(now.minute(), DEC);
+  Serial.print(now.hour(), DEC);
+  Serial.print(':');
+  Serial.print(now.minute(), DEC);
+  Serial.print(" | ");
+  Serial.print(xhour);
+  Serial.print(':');
+  Serial.print(xmin);
+  Serial.print("\n");
   
-  if (xmin > 2 && xmin < 57)
+  if (xmin >= 5 && xmin <= 59)
   {
-    if (xmin < 30)
+    if (xmin < 35)
     {
       addMatrix(c,past,c);
     }
@@ -472,6 +480,11 @@ void loop()
       xhour += 1;
     }
   }
+
+  else
+  {
+    xhour += 1;
+  }
   
   switch (xhour)
   {
@@ -479,73 +492,73 @@ void loop()
       addMatrix(c,midnight,c);
       break;
     case 1 :
-      addMatrix(c,one,c);
+      addMatrix(c,one,c);addMatrix(c,oclock,c);
       break;
     case 2 :
-      addMatrix(c,two,c);
+      addMatrix(c,two,c);addMatrix(c,oclock,c);
       break;
     case 3 :
-      addMatrix(c,three,c);
+      addMatrix(c,three,c);addMatrix(c,oclock,c);
       break;
     case 4 :
-      addMatrix(c,four,c);
+      addMatrix(c,four,c);addMatrix(c,oclock,c);
       break;
     case 5 :
-      addMatrix(c,five,c);
+      addMatrix(c,five,c);addMatrix(c,oclock,c);
       break;
     case 6 :
-      addMatrix(c,six,c);
+      addMatrix(c,six,c);addMatrix(c,oclock,c);
       break;
     case 7 :
-      addMatrix(c,seven,c);
+      addMatrix(c,seven,c);addMatrix(c,oclock,c);
       break;
     case 8 :
-      addMatrix(c,eight,c);
+      addMatrix(c,eight,c);addMatrix(c,oclock,c);
       break;
     case 9 :
-      addMatrix(c,nine,c);
+      addMatrix(c,nine,c);addMatrix(c,oclock,c);
       break;
     case 10 :
-      addMatrix(c,ten,c);
+      addMatrix(c,ten,c);addMatrix(c,oclock,c);
       break;
     case 11 :
-      addMatrix(c,eleven,c);
+      addMatrix(c,eleven,c);addMatrix(c,oclock,c);addMatrix(c,oclock,c);
       break;
     case 12 :
       addMatrix(c,noon,c);
       break;
     case 13 :
-      addMatrix(c,one,c);
+      addMatrix(c,one,c);addMatrix(c,oclock,c);
       break;
     case 14 :
-      addMatrix(c,two,c);
+      addMatrix(c,two,c);addMatrix(c,oclock,c);
       break;
     case 15 :
-      addMatrix(c,three,c);
+      addMatrix(c,three,c);addMatrix(c,oclock,c);
       break;
     case 16 :
-      addMatrix(c,four,c);
+      addMatrix(c,four,c);addMatrix(c,oclock,c);
       break;
     case 17 :
-      addMatrix(c,five,c);
+      addMatrix(c,five,c);addMatrix(c,oclock,c);
       break;
     case 18 :
-      addMatrix(c,six,c);
+      addMatrix(c,six,c);addMatrix(c,oclock,c);
       break;
     case 19 :
-      addMatrix(c,seven,c);
+      addMatrix(c,seven,c);addMatrix(c,oclock,c);
       break;
     case 20 :
-      addMatrix(c,eight,c);
+      addMatrix(c,eight,c);addMatrix(c,oclock,c);
       break;
     case 21 :
-      addMatrix(c,nine,c);
+      addMatrix(c,nine,c);addMatrix(c,oclock,c);
       break;
     case 22 :
-      addMatrix(c,ten,c);
+      addMatrix(c,ten,c);addMatrix(c,oclock,c);
       break;
     case 23 :
-      addMatrix(c,eleven,c);
+      addMatrix(c,eleven,c);addMatrix(c,oclock,c);
       break;
     case 24 :
       addMatrix(c,midnight,c);
@@ -556,14 +569,17 @@ void loop()
       break;
   }
 
-  if (((xmin <= 2) || (xmin > 57)) && ((xhour != 12)&&(xhour != 0)&&(xhour != 24))){addMatrix(c,oclock,c);}
-  else if ((xmin > 2 && xmin <= 7) || (xmin > 52 && xmin <= 57)){addMatrix(c,five1,c);}
-  else if ((xmin > 7 && xmin <= 12) || (xmin > 47 && xmin <= 52)){addMatrix(c,ten1,c);}
-  else if ((xmin > 12 && xmin <= 17) || (xmin > 42 && xmin <= 47)){addMatrix(c,quarter,c);}
-  else if ((xmin > 17 && xmin <= 22) || (xmin > 37 && xmin <= 42)){addMatrix(c,twenty,c);}
-  else if ((xmin > 22 && xmin <= 27) || (xmin > 32 && xmin <= 37)){addMatrix(c,twenty,c);addMatrix(c,five1,c);}
-  else if ((xmin > 27 && xmin <= 32)){addMatrix(c,half,c);}
-  else{addMatrix(xx,xx,c);}
+//  if ((xhour != 12)&&(xhour != 0)){addMatrix(c,oclock,c);}
+  
+  if ((xmin >= 5 && xmin < 10) || (xmin >= 55 && xmin < 59)){addMatrix(c,five1,c);}
+  else if ((xmin >= 10 && xmin < 15) || (xmin >= 50 && xmin < 55)){addMatrix(c,ten1,c);}
+  else if ((xmin >= 15 && xmin < 20) || (xmin >= 45 && xmin < 50)){addMatrix(c,quarter,c);}
+  else if ((xmin >= 20 && xmin < 25) || (xmin >= 40 && xmin < 45)){addMatrix(c,twenty,c);}
+  else if ((xmin >= 25 && xmin < 30) || (xmin >= 35 && xmin < 40)){addMatrix(c,twenty,c);addMatrix(c,five1,c);}
+  else if ((xmin >= 30 && xmin < 35)){addMatrix(c,half,c);}
+  else{addMatrix(c,pixels,c);}
+
+//  addMatrix(a,c,c); //debug leds
   
   lit(c);
 }
